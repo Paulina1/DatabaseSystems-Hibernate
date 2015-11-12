@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping package="pl.edu.agh.ki.bd.htmlIndexer.model">
+ 
+    <class name="Sentence">
+        <id name="id">
+                <generator class="native"/>
+        </id>
+        <property name="content" type="text"/>
+        <one-to-one name="sentence"
+        	property-ref="proceedUrl" />
+                  
+    </class>
+    
+    
+    <class name="ProceedUrl">
+        <id name="id">
+                <generator class="native"/>
+        </id>
+        <property name="url" type="text"/>
+        <property name="date" type="text"/>
+        <set name="sentences" inverse="true">
+            <key column="ProceedUrlId" />
+            <one-to-many class="Sentence" />
+		</set>
+    </class>
+ 
+</hibernate-mapping>
+
+
+
