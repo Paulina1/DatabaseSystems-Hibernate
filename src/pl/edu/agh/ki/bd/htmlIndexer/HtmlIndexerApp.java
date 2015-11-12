@@ -30,6 +30,8 @@ public class HtmlIndexerApp
 				System.out.println("'x'      	- exit HtmlIndexer");
 				System.out.println("'i URLs'  	- index URLs, space separated");
 				System.out.println("'f WORDS'	- find sentences containing all WORDs, space separated");
+				System.out.println("'l WORDS'	- find longer sentences");
+				System.out.println("'d'	- make overall");
 			}
 			else if (command.startsWith("x"))
 			{
@@ -62,6 +64,16 @@ public class HtmlIndexerApp
 				for (String sentence : indexer.findLongerSentences(Integer.parseInt(command.substring(2))))
 				{
 					System.out.println("Found in sentence: " + sentence);
+				}
+			}
+
+			else if (command.startsWith("d "))
+			{
+				for (Object[] row : indexer.makeOverall())
+				{
+					String url = (String) row[0];
+					Integer sent = (Integer) row[1];
+					System.out.println(url + ": " + sent);
 				}
 			}
 			

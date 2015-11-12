@@ -71,6 +71,17 @@ public class Index
 		
 		return result;
 	}
+
+	public List<Object[]>  makeOverall()	{
+		Session session = HibernateUtils.getSession();
+		Transaction transaction = session.beginTransaction();
+		List<Object[]> results = session.createQuery("select p.url, count(s.id) from ProceedUrl p join p.sentences s").list();
+
+		transaction.commit();
+		session.close();
+
+		return results;
+	}
 	
 	
 }
