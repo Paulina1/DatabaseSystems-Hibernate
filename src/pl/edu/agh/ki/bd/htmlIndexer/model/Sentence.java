@@ -8,6 +8,7 @@ public class Sentence {
 	private long id;
 	private String content;
 	private String URL;
+	private ProceedUrl proceedUrl;
 	
 	public Sentence() 
 	{
@@ -45,7 +46,11 @@ public class Sentence {
 		this.URL = URL;
 	}
 
+	public ProceedUrl getProceedUrl() {
+		return proceedUrl;
+	}
 
-
-
+	public void setProceedUrl(ProceedUrl proceedUrl) {
+		this.proceedUrl = proceedUrl;
+	}
 }
