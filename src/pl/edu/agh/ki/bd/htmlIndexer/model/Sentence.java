@@ -1,24 +1,29 @@
 package pl.edu.agh.ki.bd.htmlIndexer.model;
 
 
-
+import java.util.HashSet;
+import java.util.Set;
 
 public class Sentence {
 	
 	private long id;
-	private String content;
-	private String URL;
 	private ProceedUrl proceedUrl;
-	
-	public Sentence() 
+	private Set<Word> words;
+
+	public Sentence(ProceedUrl proceedUrl, Set<Word> words)
 	{
-		
+		this.proceedUrl = proceedUrl;
+		this.words = words;
 	}
 	
-	public Sentence(String content, String URL)
+	public Sentence(ProceedUrl proceedUrl)
 	{
-		this.setContent(content);
-		this.setURL(URL);
+		this.proceedUrl = proceedUrl;
+		this.words = new HashSet<Word>(0);
+	}
+
+	public Sentence() {
+		this.words = new HashSet<Word>(0);
 	}
 
 	
@@ -30,27 +35,27 @@ public class Sentence {
 		this.id = id;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
-	public String getURL() {
-		return URL;
-	}
-
-	public void setURL(String URL) {
-		this.URL = URL;
-	}
-
 	public ProceedUrl getProceedUrl() {
 		return proceedUrl;
 	}
 
 	public void setProceedUrl(ProceedUrl proceedUrl) {
 		this.proceedUrl = proceedUrl;
+	}
+
+	public Set<Word> getWords() {
+		return words;
+	}
+
+	public void setWords(Set<Word> words) {
+		this.words = words;
+	}
+
+	public String getSentence()	{
+		String sentence = "";
+		for (Word word : this.words)	{
+			sentence += word.getContent() + ' ';
+		}
+		return sentence;
 	}
 }

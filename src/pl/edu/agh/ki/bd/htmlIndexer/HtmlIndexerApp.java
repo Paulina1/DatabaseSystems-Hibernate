@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
 import pl.edu.agh.ki.bd.htmlIndexer.model.Sentence;
 import pl.edu.agh.ki.bd.htmlIndexer.persistence.HibernateUtils;
@@ -31,7 +32,9 @@ public class HtmlIndexerApp
 				System.out.println("'i URLs'  	- index URLs, space separated");
 				System.out.println("'f WORDS'	- find sentences containing all WORDs, space separated");
 				System.out.println("'l WORDS'	- find longer sentences");
+				System.out.println("'c WORD'	- count appearance of WORD");
 				System.out.println("'d'	- make overall");
+				System.out.println("'k URL URL'	- compare words");
 			}
 			else if (command.startsWith("x"))
 			{
@@ -48,14 +51,16 @@ public class HtmlIndexerApp
 						System.out.println("Indexed: " + url);
 					} catch (Exception e) {
 						System.out.println("Error indexing: " + e.getMessage());
+						e.printStackTrace();
 					}
 				}
 			}
 			else if (command.startsWith("f "))
 			{
-				for (Sentence sentence : indexer.findSentencesByWords(command.substring(2)))
+				for (Object[] sentence : indexer.findSentencesByWords(command.substring(2)))
 				{
-					System.out.println("Found in sentence: " + sentence.getContent() + "url: " + sentence.getURL());
+					System.out.println("Found in sentence: " + ((Sentence) sentence[0]).getSentence() +
+							"url: " + ((Sentence) sentence[0]).getProceedUrl().getUrl() + " appearance: " + sentence[1]);
 				}
 			}
 			
@@ -67,14 +72,36 @@ public class HtmlIndexerApp
 				}
 			}
 
-			else if (command.startsWith("d "))
+			else if (command.startsWith("d"))
 			{
 				for (Object[] row : indexer.makeOverall())
 				{
 					String url = (String) row[0];
-					Integer sent = (Integer) row[1];
-					System.out.println(url + ": " + sent);
+					System.out.println(url + ": " + row[1]);
 				}
+			}
+			else if (command.startsWith("c "))
+			{
+				for (Object[] row : indexer.findAppearance(command.substring(2)))
+				{
+					System.out.println("Number in: " + row[1] + " = " + row[0]);
+				}
+
+			}
+			else if (command.startsWith("k "))
+			{
+				System.out.println("Same words:");
+				String [] pages = command.substring(2).split(" ");
+
+				List<String> res = indexer.compareTwoUrl(pages[0], pages[1]);
+
+				for (String row : res)
+				{
+					System.out.println(row);
+				}
+
+				System.out.println("Number of same: " + res.size());
+
 			}
 			
 			System.out.println("took "+ (new Date().getTime() - startAt)+ " ms");		

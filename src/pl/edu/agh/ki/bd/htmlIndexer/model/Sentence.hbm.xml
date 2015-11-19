@@ -9,10 +9,12 @@
         <id name="id">
                 <generator class="native"/>
         </id>
-        <property name="content" type="text"/>
-        <many-to-one name="proceedUrl" column="proceedUrlId"/>
+        <many-to-one cascade="all" name="proceedUrl" column="proceedUrlId"/>
+        <set name="words" inverse="true" cascade="all" table="WordSentence">
+            <key column="id" />
+            <many-to-many column="content" class="Word" />
+        </set>
     </class>
-    
     
     <class name="ProceedUrl">
         <id name="id">
@@ -20,13 +22,18 @@
         </id>
         <property name="url" type="text"/>
         <property name="date" type="text"/>
-        <set name="sentences" inverse="true">
+        <set cascade="all" name="sentences" inverse="true">
             <key column="proceedUrlId" />
             <one-to-many class="Sentence" />
 		</set>
     </class>
+
+    <class name="Word">
+        <id name="content" column="content"></id>
+        <set cascade="all" name="sentences" table="WordSentence">
+            <key column="content" />
+            <many-to-many column="id" class="Sentence" />
+        </set>
+    </class>
  
 </hibernate-mapping>
-
-
-
